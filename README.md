@@ -1,6 +1,12 @@
 ![Logo](admin/onkyo.png)
 # ioBroker.onkyo-vis
 
+[![NPM version](http://img.shields.io/npm/v/iobroker.onkyo-vis.svg)](https://www.npmjs.com/package/iobroker.onkyo-vis)
+[![Downloads](https://img.shields.io/npm/dm/iobroker.onkyo-vis.svg)](https://www.npmjs.com/package/iobroker.onkyo-vis)
+[![Travis-CI](https://travis-ci.org/Eisbaeeer/ioBroker.onkyo-vis.svg?branch=master)](https://www.travis-ci.org/Eisbaeeer/ioBroker.onkyo-vis)   
+[![NPM](https://nodei.co/npm/iobroker.onkyo-vis.png?downloads=true)](https://nodei.co/npm/iobroker.onkyo-vis/)
+
+
 This adapter allows control of Onkyo AVRs using the EISCP protocol.
 
 It uses node-eiscp: https://github.com/tillbaks/node-eiscp
