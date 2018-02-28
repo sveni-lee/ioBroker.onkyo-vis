@@ -3,7 +3,7 @@
         "name":                     "onkyo-vis",
         "title":                    "Onkyo EISCP - VIS compatible",
         "desc":                     "Control Onkyo AVRs with EISCP protocol and VIS support",
-        "version":                  "1.0.1",
+        "version":                  "1.0.2",
         "mode":                     "daemon",
         "platform":                 "Javascript/Node.js",
         "loglevel":                 "info",
