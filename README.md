@@ -1,5 +1,5 @@
 ![Logo](admin/onkyo.png)
-# ioBroker.onkyo
+# ioBroker.onkyo-vis
 
 This adapter allows control of Onkyo AVRs using the EISCP protocol.
 

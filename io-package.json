@@ -1,6 +1,6 @@
 {
     "common": {
-        "name":                     "onkyo",
+        "name":                     "onkyo-vis",
         "title":                    "Onkyo EISCP - VIS compatible",
         "desc":                     "Control Onkyo AVRs with EISCP protocol and VIS support",
         "version":                  "1.0.1",
@@ -14,10 +14,10 @@
             "Lars Weimar <Eisbaeeer@gmail.com>"
         ],
         "license":                  "MIT",
-        "readme":                   "https://github.com/Eisbaeeer/ioBroker.onkyo/blob/master/README.md",
+        "readme":                   "https://github.com/Eisbaeeer/ioBroker.onkyo-vis/blob/master/README.md",
         "icon":                     "onkyo.png",
         "type":                     "multimedia",
-        "extIcon":                  "https://raw.githubusercontent.com/Eisbaeeer/ioBroker.onkyo/master/admin/onkyo.png"
+        "extIcon":                  "https://raw.githubusercontent.com/Eisbaeeer/ioBroker.onkyo-vis/master/admin/onkyo.png"
     },
     "native": {
         "avrAddress":  "",
