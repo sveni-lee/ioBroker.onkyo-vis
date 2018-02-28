@@ -42,8 +42,5 @@
   "main": "onkyo.js",
   "scripts": {
     "test": "node node_modules/mocha/bin/mocha"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
   }
 }
