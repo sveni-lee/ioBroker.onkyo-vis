@@ -29,6 +29,10 @@ To DO:
 ## THIS IS A SPLIT BRANCH OF ONKYO
 
 ## ChangeLog
+### 1.0.1 (2018.02.28)
+* (Eisbaeeer) Changed name of adapter
+* (Eisbaeeer) Added testing of adapter in travis
+
 ### 1.0.0 (2017.11.28)
 * (Eisbaeeer) Add max volume settings to zone1 and zone2.   
 * (Eisbaeeer) changed objects to switch
