@@ -11,7 +11,7 @@ var objects = {};
 var volume = {};
 
 var adapter = utils.adapter({    // name has to be set and has to be equal to adapters folder name and main file name excluding extension
-    name:  'onkyo',
+    name:  'onkyo-vis',
     // is called if a subscribed state changes
     stateChange: function (id, state) {
         adapter.log.debug('stateChange ' + id + ' ' + JSON.stringify(state));
