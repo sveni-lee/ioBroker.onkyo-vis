@@ -1,14 +1,14 @@
 {
   "name": "iobroker.onkyo-vis",
-  "version": "1.0.2",
+  "version": "0.0.1",
   "description": "Control Onkyo AVRs with EISCP protocol from ioBroker",
-  "author": "Oliver Wagner <owagner@tellerulam.com>",
+  "author": "",
   "contributors": [
-    "Oliver Wagner <owagner@tellerulam.com>",
+    "",
     "bluefox <bluefox@ccu.io>",
-    "Lars Weimar <Eisbaeeer@gmail.com>"
+    ""
   ],
-  "homepage": "https://github.com/Eisbaeeer/ioBroker.onkyo-vis",
+  "homepage": "https://github.com/sveni-lee/ioBroker.onkyo-vis/tree/TEST_sveni_lee",
   "license": "MIT",
   "keywords": [
     "ioBroker",
@@ -18,7 +18,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/Eisbaeeer/ioBroker.onkyo-vis"
+    "url": "https://github.com/sveni-lee/ioBroker.onkyo-vis/tree/TEST_sveni_lee"
   },
   "dependencies": {
 	"eiscp": "https://github.com/GermanBluefox/node-eiscp/tarball/master/"
@@ -37,7 +37,7 @@
       "chai": "^4.1.2"
   },
   "bugs": {
-    "url": "https://github.com/Eisbaeeer/ioBroker.onkyo-vis/issues"
+    "url": ""
   },
   "main": "onkyo.js",
   "scripts": {
