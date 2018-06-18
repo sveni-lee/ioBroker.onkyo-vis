@@ -367,7 +367,7 @@ function createObjects () {
 		  'NET/USB-MENU-9',
 		  'NET/USB_POSITION',
 		  'NET/USB_NAVIGATION',
-		  'NET/USB_POSITION_SUMM',
+		  'NET/USB_POSITION_SUMM'
           );
       
       for ( var i=0 ; i < datapoints.length ; i++ )  {
@@ -527,7 +527,7 @@ function main() {
       var string_position = string.substr(1,1);       //Cursor position
       var string_update = string.substr(2,1);         //Cursor position update (clear list)
       adapter.log.debug("adapter Onkyo Event Receiver NLS:"+string_nls);
-                                            }
+                                            
       //Clear Menu when update is need
       if (string_update == 'P') {
               adapter.setState (adapter.namespace + '.' + 'NET-MENU-0', {val: "", ack: true});
