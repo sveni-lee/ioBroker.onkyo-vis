@@ -354,7 +354,20 @@ function createObjects () {
           'Tuner_Preset_Zone2',
           'Listening_Mode',
           'Audio_Information',
-          'Video_Information'
+          'Video_Information',
+		  'NET/USB-MENU-0',
+		  'NET/USB-MENU-1',
+		  'NET/USB-MENU-2',
+		  'NET/USB-MENU-3',
+		  'NET/USB-MENU-4',
+		  'NET/USB-MENU-5',
+		  'NET/USB-MENU-6',
+		  'NET/USB-MENU-7',
+		  'NET/USB-MENU-8',
+		  'NET/USB-MENU-9',
+		  'NET/USB_POSITION',
+		  'NET/USB_NAVIGATION',
+		  'NET/USB_POSITION_SUMM',
           );
       
       for ( var i=0 ; i < datapoints.length ; i++ )  {
@@ -494,6 +507,84 @@ function main() {
       adapter.setState (adapter.namespace + '.' + 'Power_Zone2', {val: false, ack: true});
                         } 
                     }
+     //Navigation bei Netzwerk Modus
+    if (chunk == 'NLT')  {
+      var string_nlt = string.substr(22,40);
+	  adapter.setState (adapter.namespace + '.' + 'NET/USB_NAVIGATION', {val: string_nlt, ack: true});
+      //String zerlegen fuer Navigation
+      var string_nlt_nav = string.substr(6,2);                    //2 digits navigation
+      string_nlt_nav = parseInt(string_nlt_nav, 16) + 1;              //this start at zero, we need start at one and convert hex to decimal
+      var string_nlt_nav_summ = string.substr(10,2);              //2 digits navigation summary
+      string_nlt_nav_summ = parseInt(string_nlt_nav_summ, 16);    //convert hex to decimal
+	  adapter.setState (adapter.namespace + '.' + 'NET/USB_POSITION_SUMM', {val: string_nlt_nav+"/"+string_nlt_nav_summ, ack: true});
+                          }  
+					
+     //Rückgabe NSL-U0 ibs U9 in Variable schreiben
+    if (chunk == 'NLS')  {
+      var string_nls = string.substr(0,2);
+      var string_menu = string.substr(3,40);
+      var string_cursor = string.substr(0,1);         //Cursor
+      var string_position = string.substr(1,1);       //Cursor position
+      var string_update = string.substr(2,1);         //Cursor position update (clear list)
+      adapter.log.debug("adapter Onkyo Event Receiver NLS:"+string_nls);
+                                            }
+      //Clear Menu when update is need
+      if (string_update == 'P') {
+              adapter.setState (adapter.namespace + '.' + 'NET-MENU-0', {val: "", ack: true});
+              adapter.setState (adapter.namespace + '.' + 'NET-MENU-1', {val: "", ack: true});
+              adapter.setState (adapter.namespace + '.' + 'NET-MENU-2', {val: "", ack: true});
+              adapter.setState (adapter.namespace + '.' + 'NET-MENU-3', {val: "", ack: true});
+              adapter.setState (adapter.namespace + '.' + 'NET-MENU-4', {val: "", ack: true});
+              adapter.setState (adapter.namespace + '.' + 'NET-MENU-5', {val: "", ack: true});
+              adapter.setState (adapter.namespace + '.' + 'NET-MENU-6', {val: "", ack: true});
+              adapter.setState (adapter.namespace + '.' + 'NET-MENU-7', {val: "", ack: true});
+              adapter.setState (adapter.namespace + '.' + 'NET-MENU-8', {val: "", ack: true});
+              adapter.setState (adapter.namespace + '.' + 'NET-MENU-9', {val: "", ack: true});			  
+                        }
+    
+      //Set Curso position in var
+      if (string_cursor == 'C') {
+              string_position = parseInt(string_position) + 1;
+              adapter.setState (adapter.namespace + '.' + 'NET/USB_POSITION', {val: string_position, ack: true});			  
+                              }
+      //Debug                          
+	  adapter.log.debug("adapter Onkyo-VIS Nav: "+string_cursor+" "+string_position+" "+string_update);
+		                                                                 
+      switch (string_nls)
+                      {
+              case "U0":
+                        adapter.setState (adapter.namespace + '.' + 'NET-MENU-0', {val: string_menu, ack: true});                      
+                        break;
+              case "U1":
+                        adapter.setState (adapter.namespace + '.' + 'NET-MENU-1', {val: string_menu, ack: true});
+                        break;
+              case "U2":
+                        adapter.setState (adapter.namespace + '.' + 'NET-MENU-2', {val: string_menu, ack: true});
+                        break;
+              case "U3":
+                        adapter.setState (adapter.namespace + '.' + 'NET-MENU-3', {val: string_menu, ack: true});
+                        break;
+              case "U4":
+                        adapter.setState (adapter.namespace + '.' + 'NET-MENU-4', {val: string_menu, ack: true});
+                        break;
+              case "U5":
+                        adapter.setState (adapter.namespace + '.' + 'NET-MENU-5', {val: string_menu, ack: true});
+                        break;
+              case "U6":
+                        adapter.setState (adapter.namespace + '.' + 'NET-MENU-6', {val: string_menu, ack: true});
+                        break;
+              case "U7":
+                        adapter.setState (adapter.namespace + '.' + 'NET-MENU-7', {val: string_menu, ack: true});
+                        break;
+              case "U8":
+                        adapter.setState (adapter.namespace + '.' + 'NET-MENU-8', {val: string_menu, ack: true});
+                        break;
+              case "U9":
+                        adapter.setState (adapter.namespace + '.' + 'NET-MENU-9', {val: string_menu, ack: true});
+                        break;
+                      }            
+                 }					
+					
     //Audio information
       if (chunk == 'IFA')  {  
       adapter.setState (adapter.namespace + '.' + 'Audio_Information', {val: string, ack: true});
