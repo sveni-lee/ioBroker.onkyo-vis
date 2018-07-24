@@ -2,20 +2,19 @@
 /*jslint node: true */
 "use strict";
 
-var eiscp = require('eiscp');
+const eiscp = require('eiscp');
 
 // you have to require the adapter module and pass a options object
-var utils = require(__dirname + '/lib/utils'); // Get common adapter utils
+const utils = require(__dirname + '/lib/utils'); // Get common adapter utils
 
-var objects = {};
-var volume = {};
+const objects = {};
+const volume = {};
 
-var adapter = utils.adapter({    // name has to be set and has to be equal to adapters folder name and main file name excluding extension
-    name:  'onkyo-vis',
+const adapter = new utils.Adapter('onkyo-vis');    // name has to be set and has to be equal to adapters folder name and main file name excluding extension
+// is called if a subscribed state changes
+adapter.on('stateChange', (id, state) => {
+    adapter.log.debug('stateChange ' + id + ' ' + JSON.stringify(state));
     // is called if a subscribed state changes
-    stateChange: function (id, state) {
-        adapter.log.debug('stateChange ' + id + ' ' + JSON.stringify(state));
-		var _zone;
         if (state && !state.ack) {
 			adapter.log.debug('ack is not set!');
 			adapter.log.debug('Value: ' + state.val);
@@ -178,25 +177,19 @@ var adapter = utils.adapter({    // name has to be set and has to be equal to ad
               adapter.setState (adapter.namespace + '.' + 'command', {val: new_val, ack: false});
                   }        
               
-           //}       
+           }       
         }
-            }
-    },
+	});
 
-    // is called when adapter shuts down - callback has to be called under any circumstances!
-    unload: function (callback) {
-        try {
-            eiscp.close();
-        } finally {
-            callback();
-        }
-    },
-
-    ready: function () {
-        adapter.subscribeStates('*');
-        main();
-    },
-
+// is called when adapter shuts down - callback has to be called under any circumstances!
+adapter.on('unload', callback => {
+    try {
+        eiscp.close();
+    } finally {
+        callback();
+    }
+});
+			
 
 function decimalToHex(d, padding) {
     var hex = Number(d).toString(16);
@@ -207,7 +200,7 @@ function decimalToHex(d, padding) {
     }
 
     return hex;
-},
+}
    
 
 function createObjects () {
@@ -265,9 +258,9 @@ function createObjects () {
 
         adapter.setObject(datapoints[i], objects[adapter.namespace + '.' + datapoints[i]], function (err, obj) {
             adapter.setState(datapoints[i], {val: value, ack: true});
-        }
+        })
    }
-},
+}
 
 
 function main() {
@@ -276,9 +269,8 @@ function main() {
      
     // The adapters config (in the instance object everything under the attribute "native") is accessible via
     // adapter.config:
-    eiscp.on("error", function (e) {
-        adapter.log.error("Error: " + e);
-    });
+    eiscp.on('error', e => adapter.log.error('Error: ' + e));
+
 
     // Try to read all states
     adapter.getStatesOf(function (err, objs) {
@@ -288,7 +280,7 @@ function main() {
             }
         }
 
-        var options = {reconnect: true, verify_commands: false};
+        const options = {reconnect: true, verify_commands: false};
 
         if (adapter.config.avrAddress) {
             adapter.log.info('Connecting to AVR ' + adapter.config.avrAddress + ':' + adapter.config.avrPort);
@@ -333,7 +325,7 @@ function main() {
 		  'IFVQSTN',
           'SLAQSTN'
           );
-		
+	
         
         setTimeout(function () {
             // Try to read initial values
