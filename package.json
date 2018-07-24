@@ -42,5 +42,6 @@
   "main": "onkyo.js",
   "scripts": {
     "test": "node node_modules/mocha/bin/mocha"
-  }
+  },
+  "readmeFilename": "README.md"
 }
