@@ -482,7 +482,7 @@ function main() {
         setTimeout(function () {
             // Try to read initial values
             for (var i = 0; i < datapoints.length; i++) {
-                eiscp.raw('datapoints[i]');				
+                eiscp.raw(datapoints[i]);				
                 }
         }, 5000);
     });
