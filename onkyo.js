@@ -484,7 +484,6 @@ function main() {
             for (var i = 0; i < datapoints.length; i++) {
                 eiscp.raw('datapoints[i]');				
                 }
-            }
         }, 5000);
     });
 
