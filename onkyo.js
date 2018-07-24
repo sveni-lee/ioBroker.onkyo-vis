@@ -31,9 +31,9 @@ var adapter = utils.adapter({    // name has to be set and has to be equal to ad
                 // Raw commands are all uppercase and digits and
                 // notably have no "="
                 //if (state.val.match(/^[A-Z0-9\-+]+$/)) {   
-                //    eiscp.raw(state.val);
+                    eiscp.raw(state.val);
                 //} else {
-                    eiscp.command(state.val);
+                //    eiscp.command(state.val);
                 //}
             } else {
                 // Assume it's a high-level command
@@ -421,11 +421,13 @@ function main() {
         adapter.setState('connected', {val: true, ack: true});
 
         // Query some initial information
-        /*eiscp.raw('PWRQSTN'); // Returns Power State
+        /*
+		eiscp.raw('PWRQSTN'); // Returns Power State
         eiscp.raw('MVLQSTN'); // Returns master volume
         eiscp.raw('SLIQSTN'); // Returns Current Input
         eiscp.raw('SLAQSTN'); // Returns Current Audio Selection
-        eiscp.raw('LMDQSTN'); // Returns Current Listening Mode*/
+        eiscp.raw('LMDQSTN'); // Returns Current Listening Mode
+		*/
 
         eiscp.get_commands('main', function (err, cmds) {
             cmds.forEach(function (cmd) {
