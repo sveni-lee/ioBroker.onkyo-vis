@@ -59,6 +59,10 @@ To DO:
 ## THIS IS A SPLIT BRANCH OF ONKYO
 
 ## ChangeLog
+### 1.0.4 (2018.07.24)
+* (Eisbaeeer) Cleaned program
+* (Eisbaeeer) Fix logging
+
 ### 1.0.2 (2018.02.28)
 * (Eisbaeeer) Changed name of adapter
 * (Eisbaeeer) Added testing of adapter in travis

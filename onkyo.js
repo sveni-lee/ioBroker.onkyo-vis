@@ -40,29 +40,29 @@ var adapter = utils.adapter({    // name has to be set and has to be equal to ad
                 }
             } else {
                 // Assume it's a high-level command
-                var newVal = state.val;
-                if (newVal === true || newVal === 'true' || newVal === '1' || newVal === 1) {
-                    newVal = "on";
-                } else if (newVal === false || newVal === 'false' || newVal === '0' || newVal === 0) {
-            		if (ids.indexOf('power') != -1) { //To support different zones
-						newVal = "standby";
-					} else {
-		    			newVal = "off";
-					}
-                }
-                if (!objects[id]) {
-                    adapter.log.error('Unknown object: ' + id + ' or no connection');
-                } else {
-                    if (!objects[id].native || !objects[id].native.command) {
-                        adapter.log.warn('non controllable state: ' + id);
-                    } else {
-                        if (ids.indexOf('volume') != -1){
-							SetIntervalVol(id, newVal, _zone);
-                        } else {
-							eiscp.command(objects[id].native.command + "=" + newVal);
-						}
-                    }
-                }
+             //   var newVal = state.val;
+             //   if (newVal === true || newVal === 'true' || newVal === '1' || newVal === 1) {
+             //       newVal = "on";
+             //   } else if (newVal === false || newVal === 'false' || newVal === '0' || newVal === 0) {
+            //		if (ids.indexOf('power') != -1) { //To support different zones
+			//			newVal = "standby";
+			//		} else {
+		    //			newVal = "off";
+			//		}
+            //    }
+            //    if (!objects[id]) {
+            //        adapter.log.error('Unknown object: ' + id + ' or no connection');
+            //    } else {
+            //        if (!objects[id].native || !objects[id].native.command) {
+            //            adapter.log.warn('non controllable state: ' + id);
+            //        } else {
+            //            if (ids.indexOf('volume') != -1){
+			//				SetIntervalVol(id, newVal, _zone);
+            //            } else {
+			//				eiscp.command(objects[id].native.command + "=" + newVal);
+			//			}
+            //       }
+            //    }
                         
           // Here we go and send command from accepted Objects to command var
           if (adapter.config.fixedvars) {    
@@ -328,10 +328,9 @@ function notifyCommand(cmdstring, value, zone) {
 function createObjects () {
       // Datenpunkte anlegen
       if (adapter.config.fixedvars) {
-      var role = 'switch';
+      var role = 'state';
       var value = '';
       var datapoints = new Array(
-          'command',
           'Power_Zone1',
           'Power_Zone2',
           'NET/USB_Artist_Name_Info',
@@ -425,7 +424,35 @@ function main() {
         adapter.setState('connected', {val: true, ack: true});
 
         // Query some initial information
-        /*
+        
+		var datapoints = new Array(
+          'PWRQSTN',
+          'MVLQSTN',
+		  'ZVLQSTN',
+		  'IFAQSTN',
+          'SLIQSTN',
+		  'SLZQSTN',
+		  'ZMTQSTN',
+		  'AMTQSTN',
+		  'NSTQSTN',
+		  'NPRQSTN',
+		  'NPZQSTN',
+		  'LMDQSTN',
+		  'NALQSTN',
+		  'NATQSTN',
+		  'NTMQSTN',
+		  'NTIQSTN',
+		  'NTRQSTN',
+		  'PRSQSTN',
+		  'PRZQSTN',
+		  'TUNQSTN',
+		  'TUZQSTN',
+		  'IFVQSTN',
+          'SLAQSTN'
+          );
+		
+		
+		/*
 		eiscp.raw('PWRQSTN'); // Returns Power State
         eiscp.raw('MVLQSTN'); // Returns master volume
         eiscp.raw('SLIQSTN'); // Returns Current Input
@@ -433,31 +460,29 @@ function main() {
         eiscp.raw('LMDQSTN'); // Returns Current Listening Mode
 		*/
 
-        eiscp.get_commands('main', function (err, cmds) {
-            cmds.forEach(function (cmd) {
-				eiscp.command(cmd + "=query"); // Create for every command the object
-                eiscp.get_command(cmd, function (err, values) {
-                    adapter.log.debug('Please send following info to developer: ' + cmd + ', ' + JSON.stringify(values));
-                });
-            });
-        });
+        //eiscp.get_commands('main', function (err, cmds) {
+        //    cmds.forEach(function (cmd) {
+		//		eiscp.command(cmd + "=query"); // Create for every command the object
+        //        eiscp.get_command(cmd, function (err, values) {
+        //            adapter.log.debug('Please send following info to developer: ' + cmd + ', ' + JSON.stringify(values));
+        //        });
+        //    });
+        //});
         
-        eiscp.get_commands('zone2', function (err, cmds) {
-            cmds.forEach(function (cmd) {
-			cmd = 'zone2.' + cmd;
-				eiscp.command(cmd + "=query"); // Create for every command the object
-                eiscp.get_command(cmd, function (err, values) {
-                    adapter.log.debug('Please send following info to developer: ' + cmd + ', ' + JSON.stringify(values));
-                });
-            });
-        });
+        //eiscp.get_commands('zone2', function (err, cmds) {
+        //    cmds.forEach(function (cmd) {
+		//	cmd = 'zone2.' + cmd;
+		//		eiscp.command(cmd + "=query"); // Create for every command the object
+        //       eiscp.get_command(cmd, function (err, values) {
+        //            adapter.log.debug('Please send following info to developer: ' + cmd + ', ' + JSON.stringify(values));
+        //        });
+        //    });
+        //});
         
         setTimeout(function () {
             // Try to read initial values
-            for (var id in objects) {
-                if (objects[id].native && objects[id].native.values && objects[id].native.values.indexOf('query') != -1) {
-                    adapter.log.info('Initial query: ' + objects[id].native.command);
-                    eiscp.command(objects[id].native.command + "=query");
+            for (var i = 0; i < datapoints.length; i++) {
+                eiscp.raw('datapoints[i]');				
                 }
             }
         }, 5000);
