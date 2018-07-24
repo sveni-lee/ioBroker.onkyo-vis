@@ -16,28 +16,24 @@ var adapter = utils.adapter({    // name has to be set and has to be equal to ad
     stateChange: function (id, state) {
         adapter.log.debug('stateChange ' + id + ' ' + JSON.stringify(state));
 		var _zone;
-        if (!state.ack) {
-			adapter.log.debug('command string object: ' + id);
-			adapter.log.debug('command string: ' + state.val);
-            var ids = id.split(".");
-            if (ids.indexOf('zone2') != -1 || ids.indexOf('zone3') != -1){
-				ids = ids[ids.length - 2] +'.'+ ids[ids.length - 1];
-				_zone = ids[ids.length - 2];
-			} else {
-				ids = ids[ids.length - 1];
-				_zone = 'main';
-			}
+        if (state && !state.ack) {
+			adapter.log.debug('ack is not set!');
+			adapter.log.debug('Value: ' + state.val);
+			adapter.log.debug('id: ' + id);
+            
+		var ids = id.split(".");
+			ids = ids[ids.length - 1];
 			
             if (ids == 'command') {
                 // Determine whether it's a raw or high-level command.
                 // Raw commands are all uppercase and digits and
                 // Raw commands are all uppercase and digits and
                 // notably have no "="
-                if (state.val.match(/^[A-Z0-9\-+]+$/)) {   
-                    eiscp.raw(state.val);
-                } else {
+        //        if (state.val.match(/^[A-Z0-9\-+]+$/)) {   
+        //            eiscp.raw(state.val);
+        //        } else {
                     eiscp.command(state.val);
-                }
+        //        }
             } else {
                 // Assume it's a high-level command
              //   var newVal = state.val;
