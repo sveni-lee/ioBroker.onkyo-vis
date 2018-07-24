@@ -228,19 +228,6 @@ function SetIntervalVol(id, newVal, _zone){
  * Generate state notifications.
  * We convert "on"/"off" textual strings into bools
  */
-function notifyCommand(cmdstring, value, zone) {
-	if (cmdstring == 'volume') {
-        volume[zone] = value;
-    }
-    if (!cmdstring) {
-        adapter.log.error('Empty command string! (value: ' + value + ')');
-        return;
-    } else {
-    	if(zone !== 'main' && cmdstring !== 'command'){
-			cmdstring = zone + '.'+ cmdstring;
-		}
-        adapter.log.debug('Received: ' + cmdstring + '[' + value + ']');
-    }
 
     // Convert into boolean
     if (value == "on") {
@@ -251,48 +238,6 @@ function notifyCommand(cmdstring, value, zone) {
         value = false;
     }
 
-    var found = false;
-    for (var id in objects) {
-        if (objects[id].native && objects[id].native.command == cmdstring) {
-            adapter.setState(id, {val: value, ack: true});
-            found = true;
-            break;
-        }
-    }
-
-    // In this step the adapter creates variables from the received feedback from adapter
-    if (!found) {
-        var role;
-        // detect automatically type of state
-        if (cmdstring.indexOf('volume') != -1) {
-            role = 'media.volume';
-        } else if (cmdstring.indexOf('power') != -1) {
-            role = 'button';
-        } else if (cmdstring.indexOf('source') != -1) {
-            role = 'media.source';
-        } else {
-            role = 'media';
-        }
-
-        adapter.log.info('Create new object: ' + adapter.namespace + '.' + cmdstring + ', role = ' + role);
-
-        objects[adapter.namespace + '.' + cmdstring] = {
-            _id: adapter.namespace + '.' + cmdstring,
-            common: {
-                name: cmdstring,
-                role: role,
-                type: 'number'
-            },
-            native: {
-                command: cmdstring
-            },
-            type: 'state'
-        };
-
-        adapter.setObject(cmdstring, objects[adapter.namespace + '.' + cmdstring], function (err, obj) {
-            adapter.setState(cmdstring, {val: value, ack: true});
-        });
-    }
 }        
 
 function createObjects () {
@@ -332,7 +277,7 @@ function createObjects () {
       for ( var i=0 ; i < datapoints.length ; i++ )  {
           adapter.log.info('My array objects: ' + adapter.namespace + '.' + datapoints[i] + ', role = ' + role);        
 
-      // Create DP command if not exist and config fixedvar active
+      // Create DP command if not exist 
             
       adapter.log.info('Create new object: ' + adapter.namespace + '.' + datapoints[i] + ', role = ' + role);
       
@@ -602,15 +547,6 @@ function main() {
         string = parseInt(string, 16);              //convert hex to decimal
         adapter.setState (adapter.namespace + '.' + 'Volume_Zone2', {val: string, ack: true});
                     }                     
-   
-        if (cmd.command instanceof Array) {
-            for (var cmdix = 0; cmdix < cmd.command.length; cmdix++) {
-                notifyCommand(cmd.command[cmdix], cmd.argument, cmd.zone);
-            }
-        } else {
-            notifyCommand(cmd.command, cmd.argument, cmd.zone);
-        }
-        notifyCommand('command', cmd.iscp_command, cmd.zone);
     });
 
     eiscp.on("debug", function (message) {
