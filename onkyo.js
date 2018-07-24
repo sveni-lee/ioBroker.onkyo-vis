@@ -261,7 +261,6 @@ function notifyCommand(cmdstring, value, zone) {
     }
 
     // In this step the adapter creates variables from the received feedback from adapter
-    if (!adapter.config.fixedvars) {
     if (!found) {
         var role;
         // detect automatically type of state
@@ -294,12 +293,10 @@ function notifyCommand(cmdstring, value, zone) {
             adapter.setState(cmdstring, {val: value, ack: true});
         });
     }
-}
 }        
 
 function createObjects () {
       // Datenpunkte anlegen
-      if (adapter.config.fixedvars) {
       var role = 'state';
       var value = '';
       var datapoints = new Array(
@@ -356,7 +353,6 @@ function createObjects () {
             adapter.setState(datapoints[i], {val: value, ack: true});
         });
     }
-   }        
   };
 
 function main() {
@@ -441,8 +437,7 @@ function main() {
         adapter.log.debug('Got message: ' + JSON.stringify(cmd));
         adapter.log.info('EISCP String: ' + cmd.iscp_command);
     // Here we go to select the RAW feedback and take it to the right variable. The RAW is in cmd.iscp_command
-    if (adapter.config.fixedvars) {
-
+  
         var chunk = cmd.iscp_command.substr(0,3);
         var string = 	cmd.iscp_command.substr(3,80);
  
@@ -607,7 +602,7 @@ function main() {
         string = parseInt(string, 16);              //convert hex to decimal
         adapter.setState (adapter.namespace + '.' + 'Volume_Zone2', {val: string, ack: true});
                     }                     
-   }
+   
         if (cmd.command instanceof Array) {
             for (var cmdix = 0; cmdix < cmd.command.length; cmdix++) {
                 notifyCommand(cmd.command[cmdix], cmd.argument, cmd.zone);
