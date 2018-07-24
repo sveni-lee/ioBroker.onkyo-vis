@@ -17,6 +17,8 @@ var adapter = utils.adapter({    // name has to be set and has to be equal to ad
         adapter.log.debug('stateChange ' + id + ' ' + JSON.stringify(state));
 		var _zone;
         if (!state.ack) {
+			adapter.log.debug('command string object: ' + id);
+			adapter.log.debug('command string: ' + state.val);
             var ids = id.split(".");
             if (ids.indexOf('zone2') != -1 || ids.indexOf('zone3') != -1){
 				ids = ids[ids.length - 2] +'.'+ ids[ids.length - 1];
@@ -28,6 +30,7 @@ var adapter = utils.adapter({    // name has to be set and has to be equal to ad
 			
             if (ids == 'command') {
                 // Determine whether it's a raw or high-level command.
+                // Raw commands are all uppercase and digits and
                 // Raw commands are all uppercase and digits and
                 // notably have no "="
                 if (state.val.match(/^[A-Z0-9\-+]+$/)) {   
