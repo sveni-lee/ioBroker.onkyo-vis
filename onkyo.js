@@ -195,8 +195,8 @@ var adapter = utils.adapter({    // name has to be set and has to be equal to ad
     ready: function () {
         adapter.subscribeStates('*');
         main();
-    }
-});
+    },
+
 
 function decimalToHex(d, padding) {
     var hex = Number(d).toString(16);
@@ -207,38 +207,8 @@ function decimalToHex(d, padding) {
     }
 
     return hex;
-}
-
-function SetIntervalVol(id, newVal, _zone){
-	if (newVal >= volume[_zone] + 10) {
-		var vol = volume[_zone];
-		var interval = setInterval(function() {
-			vol = vol + 2;
-				if (vol >= newVal){
-					vol = newVal;
-					clearInterval(interval);
-				}
-			eiscp.command(objects[id].native.command + "=" + vol); 
-			}, 500);
-	} else {
-		eiscp.command(objects[id].native.command + "=" + newVal);
-	}
-}
-/*
- * Generate state notifications.
- * We convert "on"/"off" textual strings into bools
- */
-
-    // Convert into boolean
-    if (value == "on") {
-        value = true;
-    } else if (value == "off") {
-        value = false;
-    } else if (value == "standby") {
-        value = false;
-    }
-
-}        
+},
+   
 
 function createObjects () {
       // Datenpunkte anlegen
@@ -276,11 +246,10 @@ function createObjects () {
       
       for ( var i=0 ; i < datapoints.length ; i++ )  {
           adapter.log.info('My array objects: ' + adapter.namespace + '.' + datapoints[i] + ', role = ' + role);        
-
-      // Create DP command if not exist 
-            
-      adapter.log.info('Create new object: ' + adapter.namespace + '.' + datapoints[i] + ', role = ' + role);
       
+	  // Create DP command if not exist       
+      adapter.log.info('Create new object: ' + adapter.namespace + '.' + datapoints[i] + ', role = ' + role);
+   
         objects[adapter.namespace + '.' + datapoints[i]] = {
             _id: adapter.namespace + '.' + datapoints[i],
             common: {
@@ -292,13 +261,14 @@ function createObjects () {
                 command: datapoints[i]
             },
             type: 'state'
-        };
+        }
 
         adapter.setObject(datapoints[i], objects[adapter.namespace + '.' + datapoints[i]], function (err, obj) {
             adapter.setState(datapoints[i], {val: value, ack: true});
-        });
-    }
-  };
+        }
+   }
+},
+
 
 function main() {
     // First create the objects
