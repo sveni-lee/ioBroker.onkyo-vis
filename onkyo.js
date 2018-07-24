@@ -78,7 +78,8 @@ var adapter = utils.adapter({    // name has to be set and has to be equal to ad
               new_val = decimalToHex(new_val).toUpperCase();  //call function decimalToHex();
               new_val = 'MVL' + new_val;
               adapter.log.debug('new_val: ' + new_val);
-              adapter.setState (adapter.namespace + '.' + 'command', {val: new_val, ack: false});
+              eiscp.raw(new_val);
+			  //adapter.setState (adapter.namespace + '.' + 'command', {val: new_val, ack: false});
                   }
                   
               // Volume Zone2                    
