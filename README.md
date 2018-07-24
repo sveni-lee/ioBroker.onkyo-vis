@@ -11,25 +11,16 @@ This adapter allows control of Onkyo AVRs using the EISCP protocol.
 
 It uses node-eiscp: https://github.com/tillbaks/node-eiscp
 
-The node-eiscp module parses raw EISCP messages into high-level
-structured names like "master-volume", and the states will have those
-high level names, e.g. "onkyo.0.master-volume"
-
-For sending commands, there is a special state "command". Writes to that state
-trigger either an high-level EISCP command as described in the "Command syntax" section
-of https://github.com/tillbaks/node-eiscp like
-
-    system-power=on
-    zone2.power=on
-    main.balance=3
-
-or a raw EISCP command in the form of "PWR01".
+For sending commands, there is a special state "RAW". Writes to that state
+trigger only RAW commands like the known EISCP Excel files
+As example of an EISCP RAW command in the form of "PWR01".
 
 ## VIS compatibility
-If you activate the checkbox "use fix variables" you will be able to use this variables in VIS with buttons and/or widgets.
 The adapter will convert the given values in Onkyo readable values and sends it directly to the receiver and vice versa.
 In this way you can set the value of e.g. volume with a slider or input box. If you control your receiver via IR you will get this reply also on this object.
 As an second example, you can use a boolean switch button to control the power-button of the receiver.
+
+! Please do only use the Object "RAW" to send own commands. Please do not check the "Ack" flad, otherwise the command will not be working.
 
 |OBJECT WHO CAN USED IN VIS   |ISCP  |Input value         |Example  |Description                           |
 |-----------------------------|:----:|:------------------:|:-------:|-------------------------------------:|
@@ -52,13 +43,14 @@ showing whether node-eiscp is currently connected to a receiver.
 Example of VIS view
 ![VIS](admin/onkyo-vis.png)     
 
-To DO:
-- Auto-discovery like SONOS
-- Using eiscp.get_commands
-
-## THIS IS A SPLIT BRANCH OF ONKYO
+## ToDo
+* Adding new admin to adapter
 
 ## ChangeLog
+### 1.0.5
+* (Eisbaeeer) Changed structure
+* (Eisbaeeer) Added Object RAW to send own commands
+
 ### 1.0.4 (2018.07.24)
 * (Eisbaeeer) Cleaned program
 * (Eisbaeeer) Fix logging

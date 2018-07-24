@@ -7,9 +7,13 @@
             "de": "Onkyo EISCP - VIS kompatibel"
         },
         "desc":                     "Control Onkyo AVRs with EISCP protocol and VIS support",
-        "version":                  "1.0.4",
+        "version":                  "1.0.5",
 		"news": {
-            "1.0.4": {
+            "1.0.5": {
+                "en": "Now only VIS supported",
+                "de": "Jetzt wird nur noch VIS unterstützt"
+				},
+			"1.0.4": {
                 "en": "clean objects",
                 "de": "Aufgeräumt"
 				},
@@ -54,6 +58,21 @@
             },
             "native": {
                 "command": "command"
+            }
+        },
+		        {
+            "_id": "RAW",
+            "type": "state",
+            "common": {
+                "name":  "RAW",
+                "type":  "string",
+                "role":  "state",
+                "read":  true,
+                "write": true,
+                "def":   ""
+            },
+            "native": {
+                "command": "RAW"
             }
         },
         {

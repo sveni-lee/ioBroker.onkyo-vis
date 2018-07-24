@@ -20,50 +20,27 @@ var adapter = utils.adapter({    // name has to be set and has to be equal to ad
 			adapter.log.debug('ack is not set!');
 			adapter.log.debug('Value: ' + state.val);
 			adapter.log.debug('id: ' + id);
-            
-		var ids = id.split(".");
-			ids = ids[ids.length - 1];
-			
-            if (ids == 'command') {
-                // Determine whether it's a raw or high-level command.
-                // Raw commands are all uppercase and digits and
-                // Raw commands are all uppercase and digits and
-                // notably have no "="
-        //        if (state.val.match(/^[A-Z0-9\-+]+$/)) {   
-        //            eiscp.raw(state.val);
-        //        } else {
-                    eiscp.command(state.val);
-        //        }
-            } else {
-                // Assume it's a high-level command
-             //   var newVal = state.val;
-             //   if (newVal === true || newVal === 'true' || newVal === '1' || newVal === 1) {
-             //       newVal = "on";
-             //   } else if (newVal === false || newVal === 'false' || newVal === '0' || newVal === 0) {
-            //		if (ids.indexOf('power') != -1) { //To support different zones
-			//			newVal = "standby";
-			//		} else {
-		    //			newVal = "off";
-			//		}
-            //    }
-            //    if (!objects[id]) {
-            //        adapter.log.error('Unknown object: ' + id + ' or no connection');
-            //    } else {
-            //        if (!objects[id].native || !objects[id].native.command) {
-            //            adapter.log.warn('non controllable state: ' + id);
-            //        } else {
-            //            if (ids.indexOf('volume') != -1){
-			//				SetIntervalVol(id, newVal, _zone);
-            //            } else {
-			//				eiscp.command(objects[id].native.command + "=" + newVal);
-			//			}
-            //       }
-            //    }
+		
+			if (id == adapter.namespace + '.' +'command') {
+					var newcommand = state.val;
+						adapter.log.debug('newcommand: ' + newcommand);
+			if (newcommand) {				
+                eiscp.raw(newcommand);
+				}		
+			} else {
                         
           // Here we go and send command from accepted Objects to command var
-          if (adapter.config.fixedvars) {    
-              // Volume Zone1
-              if (ids == 'Volume_Zone1') {
+ 			  
+			  // SET RAW EISCP COMMAND
+              if (id == adapter.namespace + '.' +'RAW') {
+                new_val = state.val;
+				adapter.log.debug('Send RAW to Receiver: ' + new_val);
+				adapter.setState (adapter.namespace + '.' + 'command', {val: new_val, ack: false});
+				adapter.setState (adapter.namespace + '.' + 'RAW', {val: null, ack: true});
+                  }
+			  
+			  // Volume Zone1
+              if (id == adapter.namespace + '.' +'Volume_Zone1') {
               var new_val = parseInt(state.val);  //string to integer
                 if (new_val >= adapter.config.maxvolzone1)
                 {
@@ -74,12 +51,11 @@ var adapter = utils.adapter({    // name has to be set and has to be equal to ad
               new_val = decimalToHex(new_val).toUpperCase();  //call function decimalToHex();
               new_val = 'MVL' + new_val;
               adapter.log.debug('new_val: ' + new_val);
-              eiscp.raw(new_val);
-			  //adapter.setState (adapter.namespace + '.' + 'command', {val: new_val, ack: false});
+			  adapter.setState (adapter.namespace + '.' + 'command', {val: new_val, ack: false});
                   }
                   
               // Volume Zone2                    
-              if (ids == 'Volume_Zone2') {
+              if (id == adapter.namespace + '.' +'Volume_Zone2') {
               var new_val = parseInt(state.val);  //string to integer
                 if (new_val >= adapter.config.maxvolzone2)
                 {
@@ -94,7 +70,7 @@ var adapter = utils.adapter({    // name has to be set and has to be equal to ad
                   }
 
               // Audio_Mute_Zone1                    
-              if (ids == 'Audio_Mute_Zone1') {
+              if (id == adapter.namespace + '.' +'Audio_Mute_Zone1') {
                   new_val = state.val;
               adapter.log.debug('new_val: ' + new_val);
                   if (new_val == true) {
@@ -109,7 +85,7 @@ var adapter = utils.adapter({    // name has to be set and has to be equal to ad
                   }        
 
               // Audio_Mute_Zone2                    
-              if (ids == 'Audio_Mute_Zone2') {
+              if (id == adapter.namespace + '.' +'Audio_Mute_Zone2') {
                   new_val = state.val;
                   if (new_val == true) {
                       new_val = '01';
@@ -123,7 +99,7 @@ var adapter = utils.adapter({    // name has to be set and has to be equal to ad
                   }        
               
               // Input_Select_Zone1       SLI
-              if (ids == 'Input_Select_Zone1') {
+              if (id == adapter.namespace + '.' +'Input_Select_Zone1') {
                   new_val = state.val;
                   new_val = 'SLI' + new_val;
               adapter.log.debug('new_val: ' + new_val);
@@ -131,7 +107,7 @@ var adapter = utils.adapter({    // name has to be set and has to be equal to ad
                   }        
 
               // Input_Select_Zone2       SLZ
-              if (ids == 'Input_Select_Zone2') {
+              if (id == adapter.namespace + '.' +'Input_Select_Zone2') {
                   new_val = state.val;
                   new_val = 'SLZ' + new_val;
               adapter.log.debug('new_val: ' + new_val);
@@ -139,7 +115,7 @@ var adapter = utils.adapter({    // name has to be set and has to be equal to ad
                   }        
                           
               // Internet_Radio_Preset_Zone1   NPR                  
-              if (ids == 'Internet_Radio_Preset_Zone1') {
+              if (id == adapter.namespace + '.' +'Internet_Radio_Preset_Zone1') {
               var new_val = parseInt(state.val);  //string to integer
               new_val = decimalToHex(state.val).toUpperCase();  //call function decimalToHex();
               new_val = 'NPR' + new_val;
@@ -148,7 +124,7 @@ var adapter = utils.adapter({    // name has to be set and has to be equal to ad
                   }
 
               // Internet_Radio_Preset_Zone2   NPZ
-              if (ids == 'Internet_Radio_Preset_Zone2') {
+              if (id == adapter.namespace + '.' +'Internet_Radio_Preset_Zone2') {
               var new_val = parseInt(state.val);  //string to integer
               new_val = decimalToHex(state.val).toUpperCase();  //call function decimalToHex();
               new_val = 'NPZ' + new_val;
@@ -157,7 +133,7 @@ var adapter = utils.adapter({    // name has to be set and has to be equal to ad
                   }                          
               
               // Tuner_Preset_Zone1  PRS
-              if (ids == 'Tuner_Preset_Zone1') {
+              if (id == adapter.namespace + '.' +'Tuner_Preset_Zone1') {
               var new_val = parseInt(state.val);  //string to integer
               new_val = decimalToHex(state.val).toUpperCase();  //call function decimalToHex();
               new_val = 'PRS' + new_val;
@@ -166,7 +142,7 @@ var adapter = utils.adapter({    // name has to be set and has to be equal to ad
                   }                          
 
               // Tuner_Preset_Zone2  PRZ
-              if (ids == 'Tuner_Preset_Zone2') {
+              if (id == adapter.namespace + '.' +'Tuner_Preset_Zone2') {
               var new_val = parseInt(state.val);  //string to integer
               new_val = decimalToHex(state.val).toUpperCase();  //call function decimalToHex();
               new_val = 'PRZ' + new_val;
@@ -175,7 +151,7 @@ var adapter = utils.adapter({    // name has to be set and has to be equal to ad
                   }                          
 
               // Power_Zone1    PWR
-              if (ids == 'Power_Zone1') {
+              if (id == adapter.namespace + '.' +'Power_Zone1') {
                   new_val = state.val;
                   if (new_val == true) {
                       new_val = '01';
@@ -189,7 +165,7 @@ var adapter = utils.adapter({    // name has to be set and has to be equal to ad
                   }        
  
               // Power_Zone2    ZPW
-              if (ids == 'Power_Zone2') {
+              if (id == adapter.namespace + '.' +'Power_Zone2') {
                   new_val = state.val;
                   if (new_val == true) {
                       new_val = '01';
@@ -202,7 +178,7 @@ var adapter = utils.adapter({    // name has to be set and has to be equal to ad
               adapter.setState (adapter.namespace + '.' + 'command', {val: new_val, ack: false});
                   }        
               
-           }       
+           //}       
         }
             }
     },
@@ -447,38 +423,11 @@ function main() {
           'SLAQSTN'
           );
 		
-		
-		/*
-		eiscp.raw('PWRQSTN'); // Returns Power State
-        eiscp.raw('MVLQSTN'); // Returns master volume
-        eiscp.raw('SLIQSTN'); // Returns Current Input
-        eiscp.raw('SLAQSTN'); // Returns Current Audio Selection
-        eiscp.raw('LMDQSTN'); // Returns Current Listening Mode
-		*/
-
-        //eiscp.get_commands('main', function (err, cmds) {
-        //    cmds.forEach(function (cmd) {
-		//		eiscp.command(cmd + "=query"); // Create for every command the object
-        //        eiscp.get_command(cmd, function (err, values) {
-        //            adapter.log.debug('Please send following info to developer: ' + cmd + ', ' + JSON.stringify(values));
-        //        });
-        //    });
-        //});
-        
-        //eiscp.get_commands('zone2', function (err, cmds) {
-        //    cmds.forEach(function (cmd) {
-		//	cmd = 'zone2.' + cmd;
-		//		eiscp.command(cmd + "=query"); // Create for every command the object
-        //       eiscp.get_command(cmd, function (err, values) {
-        //            adapter.log.debug('Please send following info to developer: ' + cmd + ', ' + JSON.stringify(values));
-        //        });
-        //    });
-        //});
         
         setTimeout(function () {
             // Try to read initial values
             for (var i = 0; i < datapoints.length; i++) {
-                eiscp.raw(datapoints[i]);				
+                adapter.setState (adapter.namespace + '.' + 'command', {val: datapoints[i], ack: false});
                 }
         }, 5000);
     });
