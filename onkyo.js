@@ -183,22 +183,23 @@ var adapter = utils.adapter({
               
            }       
         }
-	}
 	},
 
-// is called when adapter shuts down - callback has to be called under any circumstances!
-adapter.on('unload', callback {
-    try {
-        eiscp.close();
-    } finally {
-        callback();
-    }
-  },
- ready: function () {
+  // is called when adapter shuts down - callback has to be called under any circumstances!
+    unload: function (callback) {
+        try {
+            eiscp.close();
+        } finally {
+            callback();
+        }
+    },
+
+    ready: function () {
         adapter.subscribeStates('*');
         main();
     }
 });
+
 			
 			
 
@@ -271,7 +272,6 @@ function createObjects () {
             adapter.setState(datapoints[i], {val: value, ack: true});
         });
    }
-}
 };
 
 function main() {
