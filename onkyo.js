@@ -184,18 +184,22 @@ var adapter = utils.adapter({
            }       
         }
 	}
-	});
+	},
 
 // is called when adapter shuts down - callback has to be called under any circumstances!
-adapter.on('unload', callback => {
+adapter.on('unload', callback {
     try {
         eiscp.close();
     } finally {
         callback();
     }
+  },
+ ready: function () {
+        adapter.subscribeStates('*');
+        main();
+    }
 });
 			
-adapter.on('ready', main);
 			
 
 function decimalToHex(d, padding) {
@@ -261,14 +265,14 @@ function createObjects () {
                 command: datapoints[i]
             },
             type: 'state'
-        }
+        };
 
         adapter.setObject(datapoints[i], objects[adapter.namespace + '.' + datapoints[i]], function (err, obj) {
             adapter.setState(datapoints[i], {val: value, ack: true});
-        })
+        });
    }
 }
-
+};
 
 function main() {
     // First create the objects
@@ -276,8 +280,9 @@ function main() {
      
     // The adapters config (in the instance object everything under the attribute "native") is accessible via
     // adapter.config:
-    eiscp.on('error', e => adapter.log.error('Error: ' + e));
-
+    eiscp.on("error", function (e) {
+        adapter.log.error("Error: " + e);
+    });
 
     // Try to read all states
     adapter.getStatesOf(function (err, objs) {
