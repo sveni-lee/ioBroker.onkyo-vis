@@ -26,7 +26,7 @@
         "platform":                 "Javascript/Node.js",
         "loglevel":                 "info",
         "keywords":                 ["onkyo", "avr", "eiscp"],
-        "main":                     "onkyo-vis.js",
+        "main":                     "onkyo.js",
         "authors": [
             "Oliver Wagner <owagner@tellerulam.com>",
             "Lars Weimar <Eisbaeeer@gmail.com>"
