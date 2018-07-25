@@ -10,9 +10,13 @@ const utils = require(__dirname + '/lib/utils'); // Get common adapter utils
 const objects = {};
 const volume = {};
 
-const adapter = utils.Adapter('onkyo');    // name has to be set and has to be equal to adapters folder name and main file name excluding extension
-// is called if a subscribed state changes
-adapter.on('stateChange', (id, state) => {
+//const adapter = utils.Adapter('onkyo-vis');    // name has to be set and has to be equal to adapters folder name and main file name excluding extension
+var adapter = utils.adapter({    
+	// name has to be set and has to be equal to adapters folder name and main file name excluding extension
+    name:  'onkyo-vis',
+	// is called if a subscribed state changes
+	//adapter.on('stateChange', (id, state) => {
+	stateChange: function (id, state) {	
     adapter.log.debug('stateChange ' + id + ' ' + JSON.stringify(state));
     // is called if a subscribed state changes
         if (state && !state.ack) {
@@ -179,6 +183,7 @@ adapter.on('stateChange', (id, state) => {
               
            }       
         }
+	}
 	});
 
 // is called when adapter shuts down - callback has to be called under any circumstances!
