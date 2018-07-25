@@ -190,6 +190,8 @@ adapter.on('unload', callback => {
     }
 });
 			
+adapter.on('ready', main);
+			
 
 function decimalToHex(d, padding) {
     var hex = Number(d).toString(16);
