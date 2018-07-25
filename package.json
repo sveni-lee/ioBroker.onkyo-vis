@@ -1,6 +1,6 @@
 {
   "name": "iobroker.onkyo-vis",
-  "version": "1.0.2",
+  "version": "1.0.5",
   "description": "Control Onkyo AVRs with EISCP protocol from ioBroker",
   "author": "Oliver Wagner <owagner@tellerulam.com>",
   "contributors": [
@@ -42,5 +42,6 @@
   "main": "onkyo.js",
   "scripts": {
     "test": "node node_modules/mocha/bin/mocha"
-  }
+  },
+  "readmeFilename": "README.md"
 }
